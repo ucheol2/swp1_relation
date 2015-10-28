@@ -1,0 +1,6 @@
+<h1 class="center">User list</h1>
+<div class="collection">
+  <% @users.each do |item| %>
+    <a href="/timeline/wall/<%= item.id %>" class="collection-item"><%= item.email %></a>
+  <% end %>
+</div>

@@ -1,0 +1,41 @@
+<h1>Time Line</h1>
+<div class="row">
+  <%= form_tag '/timeline/write', method: "post", class: "col s12" do %>
+    <div class="row">
+      <div class="input-field col s12">
+        <textarea id="content" class="materialize-textarea" name="content"></textarea>
+        <label for="content">무슨 생각을 하고 계신가요?</label>
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light right" type="submit">글쓰기</button>
+  <% end %>
+</div>
+
+<h3>게시물</h3>
+<ul class="collection">
+  <% @blogs.reverse.each do |item| %>
+    <li class="collection-item">
+      <%= item.user.email %>: <%= item.content %>
+      <%= form_tag '/timeline/comment', method: "post" do %>
+        <input type="hidden" name="blog_id" value="<%= item.id %>">
+        <input type="text" name="content">
+        <button class="btn waves-effect waves-light right" type="submit">댓글달기</button>
+      <% end %>
+      <h4>댓글</h4>
+      <ul class="collection">
+        <% item.comments.each do |com| %>
+          <li class="collection-item">
+            <%= form_tag '/timeline/comment_modify/' + com.id.to_s , method: "post", class: "row" do %>
+              <div class="col s12">
+                <%= com.user.email%>: <%= com.msg %>
+                | <a href="/timeline/comment_delete/<%= com.id %>" style="color: red;" >x</a> |
+                <input type="text" name="content">
+                <button class="btn waves-effect waves-light right" type="submit">수정</button>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>
